@@ -3,9 +3,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 load_dotenv()
 
-# importing all key information from Foundry, will not work on your machine, 
-# unless you connect it to a model deployment and add all this information to a .env file, so dont worry about it
-# if you're interested in doing so let me know I can help you
+# importing all key information from Foundry
 endpoint = os.environ['AZURE_OPENAI_ENDPOINT']
 client = OpenAI(
   api_key=os.environ['AZURE_OPENAI_API_KEY'],
@@ -14,11 +12,11 @@ client = OpenAI(
 
 model = os.environ['AZURE_OPENAI_DEPLOYMENT']
 
-# This is the main RAG function of the program, implements keyword search from a local file
-# is not the corporate definition of rag but keyword search is a completely valid for
+# main RAG logic, checks the file for helpful lines to answer the prompt, adds them to "context"
+# and passes it to the model
 def search_local_data(prompt):
     context = []
-    with open("07-building-chat-applications/python/f1_data.txt") as file:
+    with open("f1_data.txt") as file:
         for line in file:
             words = prompt.lower().split()
             for word in words:
